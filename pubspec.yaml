@@ -72,3 +72,5 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - images/ic_back.webp
+    - images/ic_coins_forward.webp
+    - images/ic_coins_shop.webp
