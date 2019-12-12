@@ -139,6 +139,19 @@ class _CoinsRouteState extends State<CoinsRoute> {
                       ),
                     ),
                   ),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Transform(
+                        transform: Matrix4.translationValues(0, 50, 0),
+                        child: Container(
+                          height: 100,
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ),
