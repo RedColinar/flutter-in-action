@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CoinsRoute extends StatefulWidget {
@@ -7,9 +8,19 @@ class CoinsRoute extends StatefulWidget {
 
 class _CoinsRouteState extends State<CoinsRoute> {
   var coins = 16680;
+  var _pageController = new PageController();
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Widget> pages = <String, Widget>{
+      '我的任务': new Center(
+        child: new Text('My Music not implemented'),
+      ),
+      '排行榜': new Center(
+        child: new Text('Shared not implemented'),
+      ),
+    };
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -150,13 +161,57 @@ class _CoinsRouteState extends State<CoinsRoute> {
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(5)),
                           ),
+                          child: CustomTabBar(
+                            pageController: _pageController,
+                            pageNames: pages.keys.toList(),
+                          ),
                         ),
                       )),
                 ],
               ),
             ),
+            Expanded(
+                child: Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: PageView(
+                controller: _pageController,
+                children: pages.values.toList(),
+              ),
+            )),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CustomTabBar extends AnimatedWidget {
+  CustomTabBar({this.pageController, this.pageNames})
+      : super(listenable: pageController);
+
+  final PageController pageController;
+  final List<String> pageNames;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(pageNames.length, (int index) {
+          return Expanded(
+              child: RawMaterialButton(
+                  child: Text(pageNames[index]),
+                  onPressed: () {
+                    pageController.animateToPage(
+                      index,
+                      curve: Curves.easeOut,
+                      duration: const Duration(milliseconds: 300),
+                    );
+                  }));
+        }),
       ),
     );
   }
