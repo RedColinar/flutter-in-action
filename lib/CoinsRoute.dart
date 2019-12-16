@@ -13,8 +13,11 @@ class _CoinsRouteState extends State<CoinsRoute> {
   @override
   Widget build(BuildContext context) {
     final Map<String, Widget> pages = <String, Widget>{
-      '我的任务': new Center(
-        child: new Text('My Music not implemented'),
+      '我的任务': ListView.builder(
+        itemExtent: 50.0,
+        itemBuilder: (BuildContext context, int index) {
+          return Text("$index");
+        },
       ),
       '排行榜': new Center(
         child: new Text('Shared not implemented'),
@@ -74,15 +77,33 @@ class _CoinsRouteState extends State<CoinsRoute> {
             Container(
               constraints: BoxConstraints.tightForFinite(
                 width: double.infinity,
-                height: 158,
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF00AAFF), Color(0xFF0085FF)],
-                ),
+                height: 208,
               ),
               child: Stack(
                 children: <Widget>[
+                  Positioned(
+                    child: Container(
+                      constraints: BoxConstraints.tightForFinite(
+                        width: double.infinity,
+                        height: 158,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF00AAFF), Color(0xFF0085FF)],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 158,
+                    child: Container(
+                      constraints: BoxConstraints.tightForFinite(
+                        width: double.infinity,
+                        height: 50,
+                      ),
+                      color: Colors.grey,
+                    ),
+                  ),
                   Positioned(
                     top: 24,
                     left: 30,
@@ -151,33 +172,29 @@ class _CoinsRouteState extends State<CoinsRoute> {
                     ),
                   ),
                   Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Transform(
-                        transform: Matrix4.translationValues(0, 50, 0),
-                        child: Container(
-                          height: 100,
-                          margin: EdgeInsets.symmetric(horizontal: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                          child: CustomTabBar(
-                            pageController: _pageController,
-                            pageNames: pages.keys.toList(),
-                          ),
-                        ),
-                      )),
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 100,
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: CustomTabBar(
+                        pageController: _pageController,
+                        pageNames: pages.keys.toList(),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             Expanded(
-                child: Padding(
-              padding: EdgeInsets.only(top: 50),
               child: PageView(
                 controller: _pageController,
                 children: pages.values.toList(),
               ),
-            )),
+            ),
           ],
         ),
       ),
@@ -200,17 +217,21 @@ class CustomTabBar extends AnimatedWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisSize: MainAxisSize.max,
         children: List.generate(pageNames.length, (int index) {
           return Expanded(
-              child: RawMaterialButton(
-                  child: Text(pageNames[index]),
-                  onPressed: () {
-                    pageController.animateToPage(
-                      index,
-                      curve: Curves.easeOut,
-                      duration: const Duration(milliseconds: 300),
-                    );
-                  }));
+              child: ConstrainedBox(
+            constraints: BoxConstraints.expand(),
+            child: RawMaterialButton(
+                child: Text(pageNames[index]),
+                onPressed: () {
+                  pageController.animateToPage(
+                    index,
+                    curve: Curves.easeOut,
+                    duration: const Duration(milliseconds: 300),
+                  );
+                }),
+          ));
         }),
       ),
     );
